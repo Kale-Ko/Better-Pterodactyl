@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <title>Better Pterodactyl - Options</title>
+
+    <script src="options.js"></script>
+
+    <style>
+        html,
+        body {
+            margin: 8px;
+
+            width: 170px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="options" class="options">
+        <h1 class="options-title">Options</h1>
+
+        <div class="options-category">
+            <h2 class="options-category-title">Dashboard</h2>
+
+            <p class="option-label" for="dashboard-live-stats">Live stats: <input id="dashboard-live-stats" class="option" type="checkbox" checked="true"></p>
+
+            <p class="option-label" for="dashboard-show-all-ports">Show all allocated ports: <input id="dashboard-show-all-ports" class="option" type="checkbox" checked="false"></p>
+            <p class="option-label" for="dashboard-remove-ports">Remove ports: <input id="dashboard-remove-ports" class="option" type="checkbox" checked="true"></p>
+        </div>
+
+        <div class="options-category">
+            <h2 class="options-category-title">Server</h2>
+
+            <p class="option-label" for="server-live-stats">Live stats: <input id="server-live-stats" class="option" type="checkbox" checked="true"></p>
+            <p class="option-label" for="server-remove-graphs">Remove graphs: <input id="server-remove-graphs" class="option" type="checkbox" checked="false"></p>
+
+            <p class="option-label" for="server-show-all-ports">Show all allocated ports: <input id="server-show-all-ports" class="option" type="checkbox" checked="true"></p>
+            <p class="option-label" for="server-remove-ports">Remove ports: <input id="server-remove-ports" class="option" type="checkbox" checked="false"></p>
+        </div>
+
+        <div class="options-category">
+            <h2 class="options-category-title">Files</h2>
+
+            <p class="option-label" for="files-include-backups">Include backups in used storage: <input id="files-include-backups" class="option" type="checkbox" checked="true"></p>
+        </div>
+    </div>
+</body>
+
+</html>

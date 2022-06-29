@@ -1,0 +1,61 @@
+{
+    "manifest_version": 2,
+    "name": "Better Pterodactyl",
+    "short_name": "Pterodactyl+",
+    "description": "Improve the pterodactyl panel with new and improved features",
+    "version": "1.1.0",
+    "browser_specific_settings": {
+        "gecko": {
+            "id": "kale-ko@better-pterodactyl"
+        }
+    },
+    "icons": {
+        "16": "assets/icon-16.png",
+        "32": "assets/icon-32.png",
+        "64": "assets/icon-64.png",
+        "96": "assets/icon-96.png",
+        "128": "assets/icon-128.png"
+    },
+    "author": "Kale Ko",
+    "developer": {
+        "name": "Kale Ko",
+        "url": "https://kaleko.ga/"
+    },
+    "homepage_url": "https://github.com/Kale-Ko/Better-Pterodactyl",
+    "permissions": [
+        "activeTab",
+        "storage",
+        "http:\/\/*/*",
+        "https:\/\/*/*",
+        "ws:\/\/*/*",
+        "wss:\/\/*/*"
+    ],
+    "browser_action": {
+        "browser_style": true,
+        "default_icon": {
+            "16": "assets/icon-16.png",
+            "32": "assets/icon-32.png",
+            "64": "assets/icon-64.png",
+            "96": "assets/icon-96.png",
+            "128": "assets/icon-128.png"
+        },
+        "default_title": "Better Pterodactyl",
+        "default_popup": "options.html",
+        "default_area": "navbar"
+    },
+    "options_ui": {
+        "page": "options.html"
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "http:\/\/*/*",
+                "https:\/\/*/*"
+            ],
+            "js": [
+                "index.js"
+            ],
+            "run_at": "document_end"
+        }
+    ]
+}

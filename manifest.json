@@ -3,7 +3,7 @@
     "name": "Better Pterodactyl",
     "short_name": "Pterodactyl+",
     "description": "Upgrade the pterodactyl panel with new and improved features",
-    "version": "1.2.4",
+    "version": "1.2.5",
     "browser_specific_settings": {
         "gecko": {
             "id": "kale-ko@better-pterodactyl"

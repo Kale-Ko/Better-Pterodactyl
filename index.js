@@ -36,8 +36,8 @@ function load() {
 
         if (document.querySelector("body>div#app>div.sc-2l91w7-0.kDhnAT>div.tupl2x-0.ebtnLL>div.tupl2x-2.fOFvgZ>div#logo") != null) {
             if (window.location.pathname == "/") {
-                var scriptelement = document.createElement("script")
-                scriptelement.innerHTML = `var options = ${JSON.stringify(options)}
+                var scriptElement = document.createElement("script")
+                var scriptContents = document.createTextNode(`var options = ${JSON.stringify(options)}
 
 var storageAmounts = ${JSON.stringify(storageAmounts)}
 fetch(window.location.origin + "/api/client?page=1" + (document.querySelector("body>div#app>div.sc-2l91w7-0.kDhnAT>div.sc-1p0gm8n-0.kaVYNu>section>div.x3r2dw-0.kbxq2g-0.evldyg.cZTZeB>div.sc-1topkxf-0.fJAYbi>div.sc-1nxt82m-2.iaLDif>div.sc-1nxt82m-0.sc-1nxt82m-1.gdhLjd.fjGjjM>input.sc-19rce1w-0.eDhiE").checked ? "&type=admin" : "")).then(res => res.json()).then(data => {
@@ -174,11 +174,12 @@ fetch(window.location.origin + "/api/client?page=1" + (document.querySelector("b
             }
         })
     })
-})`
-                document.body.appendChild(scriptelement)
+})`)
+                scriptElement.append(scriptContents)
+                document.body.appendChild(scriptElement)
             } else if (window.location.pathname.startsWith("/server/") && window.location.pathname.split("/").length == 3) {
-                var scriptelement = document.createElement("script")
-                scriptelement.innerHTML = `var options = ${JSON.stringify(options)}
+                var scriptElement = document.createElement("script")
+                var scriptContents = document.createTextNode(`var options = ${JSON.stringify(options)}
 
 var storageAmounts = ${JSON.stringify(storageAmounts)}
 fetch(window.location.origin + "/api/client/servers/" + window.location.pathname.split("/")[2]).then(res => res.json()).then(server => {
@@ -339,8 +340,9 @@ fetch(window.location.origin + "/api/client/servers/" + window.location.pathname
 
         observer.observe(document.body, { childList: true, subtree: true })
     })
-})`
-                document.body.appendChild(scriptelement)
+})`)
+                scriptElement.append(scriptContents)
+                document.body.appendChild(scriptElement)
             }
         }
     })

@@ -70,12 +70,12 @@ fetch(window.location.origin + "/api/client?page=1" + (document.querySelector("b
                                 fetch(window.location.origin + "/api/client/servers/" + server.attributes.uuid + "/resources").then(res => res.json()).then(data => {
                                     var storage = data.attributes.resources.disk_bytes + backupsSize
                                     var storageValue = 0
-    
+
                                     while (storage > 1024) {
                                         storage = storage / 1024
                                         storageValue++
                                     }
-    
+
                                     element.querySelector("div.sc-1ibsw91-10.cFJOIm>div.sc-1ibsw91-21.clbnEU>div.sc-1ibsw91-22.hXevPX>p.sc-1ibsw91-1.cUvpcr").innerHTML = (Math.round(storage * 100) / 100).toFixed(2) + " " + storageAmounts[storageValue]
                                 })
                             }
@@ -159,7 +159,7 @@ fetch(window.location.origin + "/api/client?page=1" + (document.querySelector("b
                         })
 
                         var prevLocation = document.location.href
-            
+
                         var observer = new MutationObserver(() => {
                             if (prevLocation != document.location.href) {
                                 prevLocation = document.location.href
@@ -167,7 +167,7 @@ fetch(window.location.origin + "/api/client?page=1" + (document.querySelector("b
                                 socket.close()
                             }
                         })
-            
+
                         observer.observe(document.body, { childList: true, subtree: true })
                     })
                 }
@@ -229,7 +229,7 @@ fetch(window.location.origin + "/api/client/servers/" + window.location.pathname
             })
         })
     }
-    
+
     fetch(window.location.origin + "/api/client/servers/" + server.attributes.uuid + "/websocket").then(res => res.json()).then(data => {
         var socket = new WebSocket(data.data.socket)
 

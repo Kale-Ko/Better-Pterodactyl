@@ -7,7 +7,7 @@ browser.storage.sync.get("options").then(data => {
 
     browser.storage.sync.set({ options })
 
-    document.querySelectorAll("div.options>div.options-category>p.option-label>input.option").forEach(option => {
+    document.querySelectorAll("div.options>div.options-category>div.option>p.option-label>input.option-value").forEach(option => {
         if (options[option.id] != undefined) {
             if (option.checked != undefined) {
                 option.checked = options[option.id]

@@ -41,34 +41,141 @@ function load() {
 
 var storageAmounts = ${JSON.stringify(storageAmounts)}
 fetch(window.location.origin + "/api/client?page=1" + (document.querySelector("body>div#app>div.sc-2l91w7-0.kDhnAT>div.sc-1p0gm8n-0.kaVYNu>section>div.x3r2dw-0.kbxq2g-0.evldyg.cZTZeB>div.sc-1topkxf-0.fJAYbi>div.sc-1nxt82m-2.iaLDif>div.sc-1nxt82m-0.sc-1nxt82m-1.gdhLjd.fjGjjM>input.sc-19rce1w-0.eDhiE").checked ? "&type=admin" : "")).then(res => res.json()).then(data => {
-    data.data.forEach(server => {
-        document.querySelectorAll("body>div#app>div.sc-2l91w7-0.kDhnAT>div.sc-1p0gm8n-0.kaVYNu>section>div.x3r2dw-0.kbxq2g-0.evldyg.cZTZeB>a.sc-1xo9c6v-0.sc-1ibsw91-2.kHuGmn.sc-1topkxf-2").forEach(element => {
-            if (element.href.split("/")[4] == server.attributes.identifier) {
-                if (options["dashboard-show-all-ports"]) {
-                    var ports = ""
+    if (options["dashboard-reorder-servers"] && options["authentication-admin-key"] != undefined && options["authentication-admin-key"] != "") {
+        var done = 0
+        data.data.forEach(server => {
+            fetch(window.location.origin + "/api/application/servers/" + server.attributes.internal_id, { credentials: "omit", headers: { "Authorization": "Bearer " + options["authentication-admin-key"], "Content-Type": "application/json", "Accept": "application/json" } }).then(res => res.json()).then(data2 => {
+                data.data[data.data.indexOf(server)] = data2
 
-                    server.attributes.relationships.allocations.data.forEach(allocation => {
-                        ports += allocation.attributes.port + ", "
-                    })
+                done++
 
-                    element.querySelector("div.sc-1ibsw91-7.cNYQhw>p.sc-1ibsw91-9.bDMEQe").innerHTML = ports.substring(0, ports.length - 2)
+                if (done == data.data.length) {
+                    next()
                 }
+            })
+        })
+    } else {
+        next()
+    }
 
-                if (options["dashboard-remove-ports"]) {
-                    element.querySelector("div.sc-1ibsw91-7.cNYQhw>p.sc-1ibsw91-9.bDMEQe").remove()
-                    element.querySelector("div.sc-1ibsw91-7.cNYQhw>svg.svg-inline--fa.fa-ethernet.fa-w-16.sc-1ibsw91-8.ewCkf").remove()
+    function next() {
+        if (options["dashboard-reorder-servers"] && options["authentication-admin-key"] != undefined && options["authentication-admin-key"] != "") {
+            data.data.sort((a, b) => {
+                if (a.attributes.external_id > b.attributes.external_id) {
+                    return 1
+                } else  if (b.attributes.external_id > a.attributes.external_id) {
+                    return -1
+                } else {
+                    return 0
                 }
+            })
 
-                var backupsSize = 0
+            var elements = {}
 
-                if (options["files-include-backups"]) {
-                    fetch(window.location.origin + "/api/client/servers/" + server.attributes.uuid + "/backups").then(res => res.json()).then(data => {
-                        data.data.forEach(backup => {
-                            backupsSize += backup.attributes.bytes
+            data.data.forEach(server => {
+                document.querySelectorAll("body>div#app>div.sc-2l91w7-0.kDhnAT>div.sc-1p0gm8n-0.kaVYNu>section>div.x3r2dw-0.kbxq2g-0.evldyg.cZTZeB>a.sc-1xo9c6v-0.sc-1ibsw91-2.kHuGmn.sc-1topkxf-2").forEach(element => {
+                    if (element.href.split("/")[4] == server.attributes.identifier) {
+                        elements[server.attributes.uuid] = element.cloneNode(true)
 
-                            if (!options["dashboard-live-stats"]) {
-                                fetch(window.location.origin + "/api/client/servers/" + server.attributes.uuid + "/resources").then(res => res.json()).then(data => {
-                                    var storage = data.attributes.resources.disk_bytes + backupsSize
+                        element.remove()
+                    }
+                })
+            })
+        }
+
+        data.data.forEach(server => {
+            if (options["dashboard-reorder-servers"] && options["authentication-admin-key"] != undefined && options["authentication-admin-key"] != "") {
+                document.querySelector("body>div#app>div.sc-2l91w7-0.kDhnAT>div.sc-1p0gm8n-0.kaVYNu>section>div.x3r2dw-0.kbxq2g-0.evldyg.cZTZeB").appendChild(elements[server.attributes.uuid])
+            }
+
+            document.querySelectorAll("body>div#app>div.sc-2l91w7-0.kDhnAT>div.sc-1p0gm8n-0.kaVYNu>section>div.x3r2dw-0.kbxq2g-0.evldyg.cZTZeB>a.sc-1xo9c6v-0.sc-1ibsw91-2.kHuGmn.sc-1topkxf-2").forEach(element => {
+                if (element.href.split("/")[4] == server.attributes.identifier) {
+                    if (options["dashboard-show-all-ports"]) {
+                        var ports = ""
+
+                        server.attributes.relationships.allocations.data.forEach(allocation => {
+                            ports += allocation.attributes.port + ", "
+                        })
+
+                        element.querySelector("div.sc-1ibsw91-7.cNYQhw>p.sc-1ibsw91-9.bDMEQe").innerHTML = ports.substring(0, ports.length - 2)
+                    }
+
+                    if (options["dashboard-remove-ports"]) {
+                        element.querySelector("div.sc-1ibsw91-7.cNYQhw>p.sc-1ibsw91-9.bDMEQe").remove()
+                        element.querySelector("div.sc-1ibsw91-7.cNYQhw>svg.svg-inline--fa.fa-ethernet.fa-w-16.sc-1ibsw91-8.ewCkf").remove()
+                    }
+
+                    var backupsSize = 0
+
+                    if (options["files-include-backups"]) {
+                        fetch(window.location.origin + "/api/client/servers/" + server.attributes.uuid + "/backups").then(res => res.json()).then(data => {
+                            data.data.forEach(backup => {
+                                backupsSize += backup.attributes.bytes
+
+                                if (!options["dashboard-live-stats"]) {
+                                    fetch(window.location.origin + "/api/client/servers/" + server.attributes.uuid + "/resources").then(res => res.json()).then(data => {
+                                        var storage = data.attributes.resources.disk_bytes + backupsSize
+                                        var storageValue = 0
+
+                                        while (storage > 1024) {
+                                            storage = storage / 1024
+                                            storageValue++
+                                        }
+
+                                        element.querySelector("div.sc-1ibsw91-10.cFJOIm>div.sc-1ibsw91-21.clbnEU>div.sc-1ibsw91-22.hXevPX>p.sc-1ibsw91-1.cUvpcr").innerHTML = (Math.round(storage * 100) / 100).toFixed(2) + " " + storageAmounts[storageValue]
+                                    })
+                                }
+                            })
+                        })
+                    }
+
+                    if (options["dashboard-live-stats"]) {
+                        fetch(window.location.origin + "/api/client/servers/" + server.attributes.uuid + "/websocket").then(res => res.json()).then(data => {
+                            var socket = new WebSocket(data.data.socket)
+
+                            socket.addEventListener("open", e => {
+                                socket.send(JSON.stringify({ event: "auth", args: [data.data.token] }))
+                            })
+
+                            socket.addEventListener("message", event => {
+                                var message = JSON.parse(event.data)
+
+                                if (message.event == "auth success") {
+                                    socket.send(JSON.stringify({ event: "send stats", args: [null] }))
+                                } else if (message.event == "token expiring") {
+                                    fetch(window.location.origin + "/api/client/servers/" + server.attributes.uuid + "/websocket").then(res => res.json()).then(data => {
+                                        socket.send(JSON.stringify({ event: "auth", args: [data.data.token] }))
+                                    })
+                                } else if (message.event == "token expired") {
+                                    socket.close()
+                                } else if (message.event == "status") {
+                                    element.classList.remove("liBonM")
+                                    element.classList.remove("jqQFoq")
+                                    element.classList.remove("lpPPi")
+
+                                    if (message.args[0] == "running") {
+                                        element.classList.add("liBonM")
+                                    } else if (message.args[0] == "offline") {
+                                        element.classList.add("jqQFoq")
+                                    } else if (message.args[0] == "starting" || message.args[0] == "stopping") {
+                                        element.classList.add("lpPPi")
+                                    }
+                                } else if (message.event == "stats") {
+                                    var statselement = element.querySelector("div.sc-1ibsw91-10.cFJOIm")
+
+                                    statselement.querySelector("div.sc-1ibsw91-15.dRlStv>div.sc-1ibsw91-16.kaRbRM>p.sc-1ibsw91-1.cUvpcr").innerHTML = (Math.round(JSON.parse(message.args[0]).cpu_absolute * 100) / 100).toFixed(2) + "%"
+
+                                    var memory = JSON.parse(message.args[0]).memory_bytes
+                                    var memoryValue = 0
+
+                                    while (memory > 1024) {
+                                        memory = memory / 1024
+                                        memoryValue++
+                                    }
+
+                                    statselement.querySelector("div.sc-1ibsw91-18.htfimm>div.sc-1ibsw91-19.dwZqiD>p.sc-1ibsw91-1.cUvpcr").innerHTML = (Math.round(memory * 100) / 100).toFixed(2) + " " + storageAmounts[memoryValue]
+
+                                    var storage = JSON.parse(message.args[0]).disk_bytes + backupsSize
                                     var storageValue = 0
 
                                     while (storage > 1024) {
@@ -76,104 +183,44 @@ fetch(window.location.origin + "/api/client?page=1" + (document.querySelector("b
                                         storageValue++
                                     }
 
-                                    element.querySelector("div.sc-1ibsw91-10.cFJOIm>div.sc-1ibsw91-21.clbnEU>div.sc-1ibsw91-22.hXevPX>p.sc-1ibsw91-1.cUvpcr").innerHTML = (Math.round(storage * 100) / 100).toFixed(2) + " " + storageAmounts[storageValue]
-                                })
-                            }
+                                    statselement.querySelector("div.sc-1ibsw91-21.clbnEU>div.sc-1ibsw91-22.hXevPX>p.sc-1ibsw91-1.cUvpcr").innerHTML = (Math.round(storage * 100) / 100).toFixed(2) + " " + storageAmounts[storageValue]
+
+                                    element.classList.remove("liBonM")
+                                    element.classList.remove("jqQFoq")
+                                    element.classList.remove("lpPPi")
+
+                                    if (JSON.parse(message.args[0]).state == "running") {
+                                        element.classList.add("liBonM")
+                                    } else if (JSON.parse(message.args[0]).state == "offline") {
+                                        element.classList.add("jqQFoq")
+
+                                        statselement.querySelector("div.sc-1ibsw91-15.dRlStv>div.sc-1ibsw91-16.kaRbRM>p.sc-1ibsw91-1.cUvpcr").innerHTML = "---"
+                                        statselement.querySelector("div.sc-1ibsw91-18.htfimm>div.sc-1ibsw91-19.dwZqiD>p.sc-1ibsw91-1.cUvpcr").innerHTML = "---"
+                                    } else if (JSON.parse(message.args[0]).state == "starting" || JSON.parse(message.args[0]).state == "stopping") {
+                                        element.classList.add("lpPPi")
+                                    }
+                                } else if (message.event != "console output" && message.event != "install output") {
+                                    console.log(message)
+                                }
+                            })
+
+                            var prevLocation = document.location.href
+
+                            var observer = new MutationObserver(() => {
+                                if (prevLocation != document.location.href) {
+                                    prevLocation = document.location.href
+
+                                    socket.close()
+                                }
+                            })
+
+                            observer.observe(document.body, { childList: true, subtree: true })
                         })
-                    })
+                    }
                 }
-
-                if (options["dashboard-live-stats"]) {
-                    fetch(window.location.origin + "/api/client/servers/" + server.attributes.uuid + "/websocket").then(res => res.json()).then(data => {
-                        var socket = new WebSocket(data.data.socket)
-
-                        socket.addEventListener("open", e => {
-                            socket.send(JSON.stringify({ event: "auth", args: [data.data.token] }))
-                        })
-
-                        socket.addEventListener("message", event => {
-                            var message = JSON.parse(event.data)
-
-                            if (message.event == "auth success") {
-                                socket.send(JSON.stringify({ event: "send stats", args: [null] }))
-                            } else if (message.event == "token expiring") {
-                                fetch(window.location.origin + "/api/client/servers/" + server.attributes.uuid + "/websocket").then(res => res.json()).then(data => {
-                                    socket.send(JSON.stringify({ event: "auth", args: [data.data.token] }))
-                                })
-                            } else if (message.event == "token expired") {
-                                socket.close()
-                            } else if (message.event == "status") {
-                                element.classList.remove("liBonM")
-                                element.classList.remove("jqQFoq")
-                                element.classList.remove("lpPPi")
-
-                                if (message.args[0] == "running") {
-                                    element.classList.add("liBonM")
-                                } else if (message.args[0] == "offline") {
-                                    element.classList.add("jqQFoq")
-                                } else if (message.args[0] == "starting" || message.args[0] == "stopping") {
-                                    element.classList.add("lpPPi")
-                                }
-                            } else if (message.event == "stats") {
-                                var statselement = element.querySelector("div.sc-1ibsw91-10.cFJOIm")
-
-                                statselement.querySelector("div.sc-1ibsw91-15.dRlStv>div.sc-1ibsw91-16.kaRbRM>p.sc-1ibsw91-1.cUvpcr").innerHTML = (Math.round(JSON.parse(message.args[0]).cpu_absolute * 100) / 100).toFixed(2) + "%"
-
-                                var memory = JSON.parse(message.args[0]).memory_bytes
-                                var memoryValue = 0
-
-                                while (memory > 1024) {
-                                    memory = memory / 1024
-                                    memoryValue++
-                                }
-
-                                statselement.querySelector("div.sc-1ibsw91-18.htfimm>div.sc-1ibsw91-19.dwZqiD>p.sc-1ibsw91-1.cUvpcr").innerHTML = (Math.round(memory * 100) / 100).toFixed(2) + " " + storageAmounts[memoryValue]
-
-                                var storage = JSON.parse(message.args[0]).disk_bytes + backupsSize
-                                var storageValue = 0
-
-                                while (storage > 1024) {
-                                    storage = storage / 1024
-                                    storageValue++
-                                }
-
-                                statselement.querySelector("div.sc-1ibsw91-21.clbnEU>div.sc-1ibsw91-22.hXevPX>p.sc-1ibsw91-1.cUvpcr").innerHTML = (Math.round(storage * 100) / 100).toFixed(2) + " " + storageAmounts[storageValue]
-
-                                element.classList.remove("liBonM")
-                                element.classList.remove("jqQFoq")
-                                element.classList.remove("lpPPi")
-
-                                if (JSON.parse(message.args[0]).state == "running") {
-                                    element.classList.add("liBonM")
-                                } else if (JSON.parse(message.args[0]).state == "offline") {
-                                    element.classList.add("jqQFoq")
-
-                                    statselement.querySelector("div.sc-1ibsw91-15.dRlStv>div.sc-1ibsw91-16.kaRbRM>p.sc-1ibsw91-1.cUvpcr").innerHTML = "---"
-                                    statselement.querySelector("div.sc-1ibsw91-18.htfimm>div.sc-1ibsw91-19.dwZqiD>p.sc-1ibsw91-1.cUvpcr").innerHTML = "---"
-                                } else if (JSON.parse(message.args[0]).state == "starting" || JSON.parse(message.args[0]).state == "stopping") {
-                                    element.classList.add("lpPPi")
-                                }
-                            } else if (message.event != "console output" && message.event != "install output") {
-                                console.log(message)
-                            }
-                        })
-
-                        var prevLocation = document.location.href
-
-                        var observer = new MutationObserver(() => {
-                            if (prevLocation != document.location.href) {
-                                prevLocation = document.location.href
-
-                                socket.close()
-                            }
-                        })
-
-                        observer.observe(document.body, { childList: true, subtree: true })
-                    })
-                }
-            }
+            })
         })
-    })
+    }
 })`)
                 scriptElement.append(scriptContents)
                 document.body.appendChild(scriptElement)
@@ -265,12 +312,6 @@ fetch(window.location.origin + "/api/client/servers/" + window.location.pathname
                     }
                 }
             } else if (message.event == "stats") {
-                if (options["server-remove-graphs"]) {
-                    if (document.querySelector("body>div#app>div.sc-2l91w7-0.kDhnAT>div.sc-1p0gm8n-0.kaVYNu>section>div.x3r2dw-0.kbxq2g-0.evldyg.cZTZeB.sc-1j2y518-0.hmurjB>div.sc-1j2y518-6.iyAtmz>div.sc-19da077-0.jWBQCE") != null) {
-                        document.querySelector("body>div#app>div.sc-2l91w7-0.kDhnAT>div.sc-1p0gm8n-0.kaVYNu>section>div.x3r2dw-0.kbxq2g-0.evldyg.cZTZeB.sc-1j2y518-0.hmurjB>div.sc-1j2y518-6.iyAtmz>div.sc-19da077-0.jWBQCE").remove()
-                    }
-                }
-
                 function setInnerText(element, text) {
                     var currentText = element.innerHTML
 

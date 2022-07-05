@@ -7,12 +7,68 @@
     <script src="options.js"></script>
 
     <style>
-        html,
-        body {
-            margin: 8px;
+        html {
+            margin: 0px;
+            padding: 0px;
 
-            width: 170px;
+            width: 200px;
         }
+
+        body {
+            margin: 14px;
+            padding: 0px;
+
+            width: 100%;
+        }
+
+        .options {
+            margin: 0px;
+            padding: 0px;
+
+            width: 100%;
+        }
+
+        .options>.options-title {
+            font-size: 32px;
+        }
+
+        .options>.options-category {
+            margin: 30px 0px 20px 0px;
+            padding: 0px;
+
+            width: 100%;
+        }
+
+        .options>.options-category>.options-category-title {
+            font-size: 22px;
+        }
+
+        .options>.options-category>.options-category-description {
+            font-size: 18px;
+        }
+
+        .options>.options-category>.option {
+            margin: 10px 0px 5px 0px;
+            padding: 0px;
+
+            width: 100%;
+        }
+
+        .options>.options-category>.option>.option-label {
+            margin: 1px;
+            padding: 0px;
+
+            font-size: 14px;
+        }
+
+        .options>.options-category>.option>.option-description {
+            margin: 1px;
+            padding: 0px;
+
+            font-size: 10px;
+        }
+
+        .options>.options-category>.option>.option-value {}
     </style>
 </head>
 
@@ -23,26 +79,62 @@
         <div class="options-category">
             <h2 class="options-category-title">Dashboard</h2>
 
-            <p class="option-label" for="dashboard-live-stats">Live stats: <input id="dashboard-live-stats" class="option" type="checkbox" checked="true"></p>
+            <div class="option">
+                <p class="option-label" for="dashboard-live-stats">Live stats: <input id="dashboard-live-stats" class="option-value" type="checkbox" checked="true"></p>
+                <p class="option-description">Update the statistics in real time</p>
+            </div>
 
-            <p class="option-label" for="dashboard-show-all-ports">Show all allocated ports: <input id="dashboard-show-all-ports" class="option" type="checkbox" checked="false"></p>
-            <p class="option-label" for="dashboard-remove-ports">Remove ports: <input id="dashboard-remove-ports" class="option" type="checkbox" checked="true"></p>
+            <div class="option">
+                <p class="option-label" for="dashboard-reorder-servers">Reorder servers: <input id="dashboard-reorder-servers" class="option-value" type="checkbox" checked="false"></p>
+                <p class="option-description">Reorder all the servers alphabetically by their external id (Requires</p>
+            </div>
+
+            <div class="option">
+                <p class="option-label" for="dashboard-show-all-ports">Show all ports: <input id="dashboard-show-all-ports" class="option-value" type="checkbox" checked="false"></p>
+                <p class="option-description">Show all the ports allocated to the server in a comma seperated list</p>
+            </div>
+
+            <div class="option">
+                <p class="option-label" for="dashboard-remove-ports">Remove ports: <input id="dashboard-remove-ports" class="option-value" type="checkbox" checked="true"></p>
+                <p class="option-description">Remove the ports entirely (Overrides Show all ports)</p>
+            </div>
         </div>
 
         <div class="options-category">
             <h2 class="options-category-title">Server</h2>
 
-            <p class="option-label" for="server-live-stats">Live stats: <input id="server-live-stats" class="option" type="checkbox" checked="true"></p>
-            <p class="option-label" for="server-remove-graphs">Remove graphs: <input id="server-remove-graphs" class="option" type="checkbox" checked="false"></p>
+            <div class="option">
+                <p class="option-label" for="server-live-stats">Live stats: <input id="server-live-stats" class="option-value" type="checkbox" checked="true"></p>
+                <p class="option-description">Update the statistics in real time</p>
+            </div>
 
-            <p class="option-label" for="server-show-all-ports">Show all allocated ports: <input id="server-show-all-ports" class="option" type="checkbox" checked="true"></p>
-            <p class="option-label" for="server-remove-ports">Remove ports: <input id="server-remove-ports" class="option" type="checkbox" checked="false"></p>
+            <div class="option">
+                <p class="option-label" for="server-show-all-ports">Show all ports: <input id="server-show-all-ports" class="option-value" type="checkbox" checked="false"></p>
+                <p class="option-description">Show all the ports allocated to the server in a comma seperated list</p>
+            </div>
+
+            <div class="option">
+                <p class="option-label" for="server-remove-ports">Remove ports: <input id="server-remove-ports" class="option-value" type="checkbox" checked="true"></p>
+                <p class="option-description">Remove the ports entirely (Overrides Show all ports)</p>
+            </div>
         </div>
 
         <div class="options-category">
             <h2 class="options-category-title">Files</h2>
 
-            <p class="option-label" for="files-include-backups">Include backups in used storage: <input id="files-include-backups" class="option" type="checkbox" checked="true"></p>
+            <div class="option">
+                <p class="option-label" for="files-include-backups">Include backups: <input id="files-include-backups" class="option-value" type="checkbox" checked="true"></p>
+                <p class="option-description">Include backups in the used disk amount</p>
+            </div>
+        </div>
+
+        <div class="options-category">
+            <h2 class="options-category-title">Authentication</h2>
+
+            <div class="option">
+                <p class="option-label" for="authentication-admin-key">Admin api key: <input id="authentication-admin-key" class="option-value" type="password"></p>
+                <p class="option-description">The api key for accessing the application api (Generate at /admin/api with permission to read servers)</p>
+            </div>
         </div>
     </div>
 </body>

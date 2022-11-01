@@ -85,8 +85,8 @@
             </div>
 
             <div class="option">
-                <p class="option-label" for="dashboard-reorder-servers">Reorder servers: <input id="dashboard-reorder-servers" class="option-value" type="checkbox" checked="false"></p>
-                <p class="option-description">Reorder all the servers alphabetically by their external id (Requires you be an admin)</p>
+                <p class="option-label" for="dashboard-reorder-servers">Reorder servers: <input id="dashboard-reorder-servers" class="option-value" type="checkbox" checked="true"></p>
+                <p class="option-description">Reorder all the servers alphabetically by their external id (Requires you to be an admin) or name</p>
             </div>
 
             <div class="option">
@@ -104,13 +104,18 @@
             <h2 class="options-category-title">Server</h2>
 
             <div class="option">
-                <p class="option-label" for="server-show-all-ports">Show all ports: <input id="server-show-all-ports" class="option-value" type="checkbox" checked="false"></p>
+                <p class="option-label" for="server-show-all-ports">Show all ports: <input id="server-show-all-ports" class="option-value" type="checkbox" checked="true"></p>
                 <p class="option-description">Show all the ports allocated to the server in a comma separated list</p>
             </div>
 
             <div class="option">
-                <p class="option-label" for="server-remove-ports">Remove ports: <input id="server-remove-ports" class="option-value" type="checkbox" checked="true"></p>
+                <p class="option-label" for="server-remove-ports">Remove ports: <input id="server-remove-ports" class="option-value" type="checkbox" checked="false"></p>
                 <p class="option-description">Remove the ports entirely (Overrides Show all ports)</p>
+            </div>
+
+            <div class="option">
+                <p class="option-label" for="server-remove-graphs">Remove graphs: <input id="server-remove-graphs" class="option-value" type="checkbox" checked="false"></p>
+                <p class="option-description">Remove the graphs entirely</p>
             </div>
         </div>
 

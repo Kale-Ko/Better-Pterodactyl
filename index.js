@@ -45,7 +45,7 @@ var storageAmounts = ${JSON.stringify(storageAmounts)}
 console.log(prefix + "Successfully injected Better Pterodactyl script.")
 if (!window.PterodactylUser.root_admin) console.warn(prefix + "Your logged in as a normal user, certain things may not work.")
 
-fetch("/api/client?page=1" + (document.querySelector(".Input-sc-19rce1w-0").checked ? "&type=admin" : "")).then(res => res.json()).then(data => {
+fetch("/api/client?page=1" + ((document.querySelector(".Input-sc-19rce1w-0") != null ? document.querySelector(".Input-sc-19rce1w-0").checked : false) ? "&type=admin" : "")).then(res => res.json()).then(data => {
     if (options["dashboard-reorder-servers"] && window.PterodactylUser.root_admin) {
         var done = 0
         data.data.forEach(server => {
@@ -64,16 +64,28 @@ fetch("/api/client?page=1" + (document.querySelector(".Input-sc-19rce1w-0").chec
     }
 
     function next() {
-        if (options["dashboard-reorder-servers"] && window.PterodactylUser.root_admin) {
-            data.data.sort((a, b) => {
-                if (a.attributes.external_id > b.attributes.external_id) {
-                    return 1
-                } else if (b.attributes.external_id > a.attributes.external_id) {
-                    return -1
-                } else {
-                    return 0
-                }
-            })
+        if (options["dashboard-reorder-servers"]) {
+            if (window.PterodactylUser.root_admin) {
+                data.data.sort((a, b) => {
+                    if (a.attributes.external_id > b.attributes.external_id) {
+                        return 1
+                    } else if (b.attributes.external_id > a.attributes.external_id) {
+                        return -1
+                    } else {
+                        return 0
+                    }
+                })
+            } else {
+                data.data.sort((a, b) => {
+                    if (a.attributes.name > b.attributes.name) {
+                        return 1
+                    } else if (b.attributes.name > a.attributes.name) {
+                        return -1
+                    } else {
+                        return 0
+                    }
+                })
+            }
 
             var elements = {}
 
@@ -254,6 +266,10 @@ fetch("/api/client/servers/" + window.location.pathname.split("/")[2]).then(res 
 
     if (options["server-remove-ports"]) {
         element.children.item(1).children.item(1).children.item(0).remove()
+    }
+
+    if (options["server-remove-graphs"]) {
+        element.children.item(2).remove()
     }
 
     var backupsSize = 0

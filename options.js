@@ -18,16 +18,12 @@ browser.storage.sync.get("options").then(data => {
             options[option.id] = (option.checked != undefined ? option.checked : option.value)
         }
 
+        browser.storage.sync.set({ options })
+
         option.addEventListener("change", () => {
             options[option.id] = (option.value == "on" ? option.checked : option.value)
 
             browser.storage.sync.set({ options })
-
-            // browser.tabs.query({ }, tabs => {
-            //     tabs.forEach(tab => {
-            //         browser.tabs.reload(tab.id)
-            //     })
-            // })
         })
     })
 })

@@ -1,14 +1,4 @@
-if (document.readyState == "complete") {
-    init()
-} else {
-    window.addEventListener("load", () => {
-        init()
-    })
-}
-
 var prefix = "[Better Pterodactyl] "
-var debugPrefix = "[Debug] "
-var debug = true
 
 var storageAmounts = [
     "Bytes",
@@ -19,38 +9,41 @@ var storageAmounts = [
     "PB"
 ]
 
-function init() {
+window.addEventListener("load", () => {
     load()
+})
 
-    var prevLocation = document.location.href
-    new MutationObserver(() => {
-        if (prevLocation != document.location.href) {
-            prevLocation = document.location.href
+if (document.readyState == "complete") {
+    load()
+}
 
+var prevLocation = document.location.href
+new MutationObserver(() => {
+    if (prevLocation != document.location.href) {
+        prevLocation = document.location.href
+
+        if (document.readyState == "complete") {
             load()
         }
-    }).observe(document.body, { childList: true, subtree: true })
-}
+    }
+}).observe(document, { childList: true, subtree: true })
 
 function load() {
     browser.storage.sync.get("options").then(data => {
         var options = data.options
 
         if (document.querySelector(".App___StyledDiv-sc-2l91w7-0") != null) {
-            console.log(prefix + "Injecting Better Pterodactyl script")
+            console.log(prefix + "Injecting Better Pterodactyl script.")
 
             if (window.location.pathname == "/") {
                 var scriptElement = document.createElement("script")
                 var scriptContents = document.createTextNode(`var options = ${JSON.stringify(options)}
-
 var prefix = "${prefix}"
-var debugPrefix = "${debugPrefix}"
-var debug = ${debug}
 
 var storageAmounts = ${JSON.stringify(storageAmounts)}
 
-console.log(prefix + "Successfully injected Better Pterodactyl script")
-if (!window.PterodactylUser.root_admin) console.warn(prefix + "Your logged in as a normal user, certain things may not work")
+console.log(prefix + "Successfully injected Better Pterodactyl script.")
+if (!window.PterodactylUser.root_admin) console.warn(prefix + "Your logged in as a normal user, certain things may not work.")
 
 fetch("/api/client?page=1" + (document.querySelector(".Input-sc-19rce1w-0").checked ? "&type=admin" : "")).then(res => res.json()).then(data => {
     if (options["dashboard-reorder-servers"] && window.PterodactylUser.root_admin) {
@@ -213,10 +206,10 @@ fetch("/api/client?page=1" + (document.querySelector(".Input-sc-19rce1w-0").chec
                             new MutationObserver(() => {
                                 if (prevLocation != document.location.href) {
                                     prevLocation = document.location.href
-                        
+
                                     socket.close()
                                 }
-                            }).observe(document.body, { childList: true, subtree: true })
+                            }).observe(document, { childList: true, subtree: true })
                         })
                     }
                 }
@@ -229,21 +222,18 @@ fetch("/api/client?page=1" + (document.querySelector(".Input-sc-19rce1w-0").chec
             } else if (window.location.pathname.startsWith("/server/") && window.location.pathname.split("/").length == 3) {
                 var scriptElement = document.createElement("script")
                 var scriptContents = document.createTextNode(`var options = ${JSON.stringify(options)}
-
 var prefix = "${prefix}"
-var debugPrefix = "${debugPrefix}"
-var debug = ${debug}
 
 var storageAmounts = ${JSON.stringify(storageAmounts)}
 
-console.log(prefix + "Successfully injected Better Pterodactyl script")
-if (!window.PterodactylUser.root_admin) console.warn(prefix + "Your logged in as a normal user, certain things may not work")
+console.log(prefix + "Successfully injected Better Pterodactyl script.")
+if (!window.PterodactylUser.root_admin) console.warn(prefix + "Your logged in as a normal user, certain things may not work.")
 
 function setInnerText(element, text) {
     var currentText = element.innerHTML
 
     for (var i = 0; i < element.children.length; i++) {
-        currentText = currentText.replace(element.children.item(i).outerHTML, "").replace("&nbsp;", "").trim()
+        currentText = currentText.replace(element.children.item(i).outerHTML, "").replace("&nbsp;", " ").trim()
     }
 
     element.innerHTML = element.innerHTML.replace(currentText, text)
@@ -262,6 +252,10 @@ fetch("/api/client/servers/" + window.location.pathname.split("/")[2]).then(res 
         element.children.item(1).children.item(1).children.item(0).children.item(2).children.item(1).innerHTML = ports.substring(0, ports.length - 2)
     }
 
+    if (options["server-remove-ports"]) {
+        element.children.item(1).children.item(1).children.item(0).remove()
+    }
+
     var backupsSize = 0
 
     if (options["files-include-backups"]) {
@@ -270,79 +264,48 @@ fetch("/api/client/servers/" + window.location.pathname.split("/")[2]).then(res 
                 backupsSize += backup.attributes.bytes
             })
 
-            if (!options["server-live-stats"]) {
-                fetch("/api/client/servers/" + server.attributes.uuid + "/resources").then(res => res.json()).then(data => {
-                    var storage = data.attributes.resources.disk_bytes + backupsSize
-                    var storageValue = 0
+            fetch("/api/client/servers/" + server.attributes.uuid + "/websocket").then(res => res.json()).then(data => {
+                var socket = new WebSocket(data.data.socket)
 
-                    while (storage > 1024) {
-                        storage = storage / 1024
-                        storageValue++
-                    }
-
-                    setInnerText(element.children.item(1).children.item(1).children.item(4).children.item(2).children.item(1), (Math.round(storage * 100) / 100).toFixed(2) + " " + storageAmounts[storageValue])
-                })
-            }
-        })
-    }
-
-    fetch("/api/client/servers/" + server.attributes.uuid + "/websocket").then(res => res.json()).then(data => {
-        var socket = new WebSocket(data.data.socket)
-
-        socket.addEventListener("open", e => {
-            socket.send(JSON.stringify({ event: "auth", args: [data.data.token] }))
-        })
-
-        socket.addEventListener("message", event => {
-            var message = JSON.parse(event.data)
-
-            if (message.event == "auth success") {
-                socket.send(JSON.stringify({ event: "send stats", args: [null] }))
-            } else if (message.event == "token expiring") {
-                fetch("/api/client/servers/" + server.attributes.uuid + "/websocket").then(res => res.json()).then(data => {
+                socket.addEventListener("open", e => {
                     socket.send(JSON.stringify({ event: "auth", args: [data.data.token] }))
                 })
-            } else if (message.event == "token expired") {
-                socket.close()
-            } else if (message.event == "stats") {
-                setInnerText(element.children.item(1).children.item(1).children.item(2).children.item(2).children.item(1), (Math.round(JSON.parse(message.args[0]).cpu_absolute * 100) / 100).toFixed(2) + "%")
 
-                var memory = JSON.parse(message.args[0]).memory_bytes
-                var memoryValue = 0
+                socket.addEventListener("message", event => {
+                    var message = JSON.parse(event.data)
 
-                while (memory > 1024) {
-                    memory = memory / 1024
-                    memoryValue++
-                }
+                    if (message.event == "auth success") {
+                        socket.send(JSON.stringify({ event: "send stats", args: [null] }))
+                    } else if (message.event == "token expiring") {
+                        fetch("/api/client/servers/" + server.attributes.uuid + "/websocket").then(res => res.json()).then(data => {
+                            socket.send(JSON.stringify({ event: "auth", args: [data.data.token] }))
+                        })
+                    } else if (message.event == "token expired") {
+                        socket.close()
+                    } else if (message.event == "stats") {
+                        var storage = JSON.parse(message.args[0]).disk_bytes + backupsSize
+                        var storageValue = 0
 
-                setInnerText(element.children.item(1).children.item(1).children.item(3).children.item(2).children.item(1), (Math.round(memory * 100) / 100).toFixed(2) + " " + storageAmounts[memoryValue])
+                        while (storage > 1024) {
+                            storage = storage / 1024
+                            storageValue++
+                        }
 
-                var storage = JSON.parse(message.args[0]).disk_bytes + backupsSize
-                var storageValue = 0
+                        setInnerText(element.children.item(1).children.item(1).children.item(4).children.item(2).children.item(1), (Math.round(storage * 100) / 100).toFixed(2) + " " + storageAmounts[storageValue])
+                    }
 
-                while (storage > 1024) {
-                    storage = storage / 1024
-                    storageValue++
-                }
+                    var prevLocation = document.location.href
+                    new MutationObserver(() => {
+                        if (prevLocation != document.location.href) {
+                            prevLocation = document.location.href
 
-                setInnerText(element.children.item(1).children.item(1).children.item(4).children.item(2).children.item(1), (Math.round(storage * 100) / 100).toFixed(2) + " " + storageAmounts[storageValue])
-
-                if (JSON.parse(message.args[0]).state == "offline") {
-                    setInnerText(element.children.item(1).children.item(1).children.item(2).children.item(2).children.item(1), "---")
-                    setInnerText(element.children.item(1).children.item(1).children.item(3).children.item(2).children.item(1), "---")
-                }
-            }
+                            socket.close()
+                        }
+                    }).observe(document, { childList: true, subtree: true })
+                })
+            })
         })
-
-        var prevLocation = document.location.href
-        new MutationObserver(() => {
-            if (prevLocation != document.location.href) {
-                prevLocation = document.location.href
-    
-                socket.close()
-            }
-        }).observe(document.body, { childList: true, subtree: true })
-    })
+    }
 })`)
                 scriptElement.append(scriptContents)
                 document.body.appendChild(scriptElement)

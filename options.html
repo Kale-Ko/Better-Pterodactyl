@@ -86,7 +86,19 @@
 
             <div class="option">
                 <p class="option-label" for="dashboard-reorder-servers">Reorder servers: <input id="dashboard-reorder-servers" class="option-value" type="checkbox" checked="true"></p>
-                <p class="option-description">Reorder all the servers alphabetically by their external id (Requires you to be an admin) or name</p>
+                <p class="option-description">Reorder all the servers by the Reorder mode</p>
+            </div>
+
+            <div class="option">
+                <p class="option-label" for="dashboard-reorder-servers-mode">Reorder mode:
+                    <select id="dashboard-reorder-servers-mode" class="option-value" checked="true">
+                        <option value="external-id">External Id (Requires admin)</option>
+                        <option value="reverse-external-id">Reverse External Id (Requires admin)</option>
+                        <option value="name">Name</option>
+                        <option value="reverse-name">Reverse Name</option>
+                    </select>
+                </p>
+                <p class="option-description">The mode to reorder the servers by</p>
             </div>
 
             <div class="option">
@@ -96,7 +108,7 @@
 
             <div class="option">
                 <p class="option-label" for="dashboard-remove-ports">Remove ports: <input id="dashboard-remove-ports" class="option-value" type="checkbox" checked="true"></p>
-                <p class="option-description">Remove the ports entirely (Overrides Show all ports)</p>
+                <p class="option-description">Remove the ports list entirely (Overrides Show all ports)</p>
             </div>
         </div>
 
@@ -110,12 +122,12 @@
 
             <div class="option">
                 <p class="option-label" for="server-remove-ports">Remove ports: <input id="server-remove-ports" class="option-value" type="checkbox" checked="false"></p>
-                <p class="option-description">Remove the ports entirely (Overrides Show all ports)</p>
+                <p class="option-description">Remove the ports list entirely (Overrides Show all ports)</p>
             </div>
 
             <div class="option">
                 <p class="option-label" for="server-remove-graphs">Remove graphs: <input id="server-remove-graphs" class="option-value" type="checkbox" checked="false"></p>
-                <p class="option-description">Remove the graphs entirely</p>
+                <p class="option-description">Remove the resource graphs entirely</p>
             </div>
         </div>
 

@@ -7,9 +7,9 @@ browser.storage.sync.get("options").then(data => {
 
     browser.storage.sync.set({ options })
 
-    document.querySelectorAll("div.options>div.options-category>div.option>p.option-label>input.option-value").forEach(option => {
+    document.querySelectorAll(".options>.options-category>.option>.option-label>.option-value").forEach(option => {
         if (options[option.id] != undefined) {
-            if (option.value == "on") {
+            if (option.value == "on" || option.value == "off") {
                 option.checked = options[option.id]
             } else {
                 option.value = options[option.id]
@@ -21,7 +21,7 @@ browser.storage.sync.get("options").then(data => {
         browser.storage.sync.set({ options })
 
         option.addEventListener("change", () => {
-            options[option.id] = (option.value == "on" ? option.checked : option.value)
+            options[option.id] = ((option.value == "on" || option.value == "off") ? option.checked : option.value)
 
             browser.storage.sync.set({ options })
         })

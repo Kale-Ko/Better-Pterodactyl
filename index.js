@@ -85,7 +85,7 @@ fetch("/api/client?page=1" + ((document.querySelector(".Input-sc-19rce1w-0") != 
                         return 0
                     }
                 })
-            } else if (options["dashboard-reorder-servers-mode"] == "name" && window.PterodactylUser.root_admin) {
+            } else if (options["dashboard-reorder-servers-mode"] == "name") {
                 data.data.sort((a, b) => {
                     if (a.attributes.name > b.attributes.name) {
                         return 1
@@ -95,11 +95,21 @@ fetch("/api/client?page=1" + ((document.querySelector(".Input-sc-19rce1w-0") != 
                         return 0
                     }
                 })
-            } else if (options["dashboard-reorder-servers-mode"] == "reverse-name" && window.PterodactylUser.root_admin) {
+            } else if (options["dashboard-reorder-servers-mode"] == "reverse-name") {
                 data.data.sort((a, b) => {
                     if (a.attributes.name < b.attributes.name) {
                         return 1
                     } else if (b.attributes.name < a.attributes.name) {
+                        return -1
+                    } else {
+                        return 0
+                    }
+                })
+            } else {
+                data.data.sort((a, b) => {
+                    if (a.attributes.name > b.attributes.name) {
+                        return 1
+                    } else if (b.attributes.name > a.attributes.name) {
                         return -1
                     } else {
                         return 0
@@ -372,15 +382,37 @@ console.warn(prefix + "Your running an old version of the panel, certain things 
 
 fetch("/api/client?page=1" + ((document.querySelector(".sc-19rce1w-0") != null ? document.querySelector(".sc-19rce1w-0").checked : false) ? "&type=admin" : "")).then(res => res.json()).then(data => {
     if (options["dashboard-reorder-servers"]) {
-        data.data.sort((a, b) => {
-            if (a.attributes.name > b.attributes.name) {
-                return 1
-            } else if (b.attributes.name > a.attributes.name) {
-                return -1
-            } else {
-                return 0
-            }
-        })
+        if (options["dashboard-reorder-servers-mode"] == "name") {
+            data.data.sort((a, b) => {
+                if (a.attributes.name > b.attributes.name) {
+                    return 1
+                } else if (b.attributes.name > a.attributes.name) {
+                    return -1
+                } else {
+                    return 0
+                }
+            })
+        } else if (options["dashboard-reorder-servers-mode"] == "reverse-name") {
+            data.data.sort((a, b) => {
+                if (a.attributes.name < b.attributes.name) {
+                    return 1
+                } else if (b.attributes.name < a.attributes.name) {
+                    return -1
+                } else {
+                    return 0
+                }
+            })
+        } else {
+            data.data.sort((a, b) => {
+                if (a.attributes.name > b.attributes.name) {
+                    return 1
+                } else if (b.attributes.name > a.attributes.name) {
+                    return -1
+                } else {
+                    return 0
+                }
+            })
+        }
 
         var elements = {}
 

@@ -1,12 +1,12 @@
 var prefix = "[Better Pterodactyl] "
 
 var storageAmounts = [
-    "Bytes",
-    "KB",
-    "MB",
-    "GB",
-    "TB",
-    "PB"
+    "iB",
+    "KiB",
+    "MiB",
+    "GiB",
+    "TiB",
+    "PiB"
 ]
 
 window.addEventListener("load", () => {

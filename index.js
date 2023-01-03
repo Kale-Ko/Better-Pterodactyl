@@ -153,7 +153,7 @@ fetch("/api/client?page=1" + ((document.querySelector(".Input-sc-19rce1w-0") != 
                             ports += allocation.attributes.port + ", "
                         })
 
-                        element.children.item(1).children.item(0).children.item(1).innerHTML = ports.substring(0, ports.length - 2)
+                        element.children.item(1).children.item(0).children.item(1).innerText = ports.substring(0, ports.length - 2)
                     }
 
                     if (options["dashboard-remove-ports"]) {
@@ -178,7 +178,7 @@ fetch("/api/client?page=1" + ((document.querySelector(".Input-sc-19rce1w-0") != 
                                         storageValue++
                                     }
 
-                                    element.children.item(2).children.item(2).children.item(0).children.item(1).innerHTML = (Math.round(storage * 100) / 100).toFixed(2) + " " + storageAmounts[storageValue]
+                                    element.children.item(2).children.item(2).children.item(0).children.item(1).innerText = (Math.round(storage * 100) / 100).toFixed(2) + " " + storageAmounts[storageValue]
                                 })
                             }
                         })
@@ -216,7 +216,7 @@ fetch("/api/client?page=1" + ((document.querySelector(".Input-sc-19rce1w-0") != 
                                         element.classList.add("kVijQB")
                                     }
                                 } else if (message.event == "stats") {
-                                    element.children.item(2).children.item(0).children.item(0).children.item(1).innerHTML = (Math.round(JSON.parse(message.args[0]).cpu_absolute * 100) / 100).toFixed(2) + "%"
+                                    element.children.item(2).children.item(0).children.item(0).children.item(1).innerText = (Math.round(JSON.parse(message.args[0]).cpu_absolute * 100) / 100).toFixed(2) + "%"
 
                                     var memory = JSON.parse(message.args[0]).memory_bytes
                                     var memoryValue = 0
@@ -226,7 +226,7 @@ fetch("/api/client?page=1" + ((document.querySelector(".Input-sc-19rce1w-0") != 
                                         memoryValue++
                                     }
 
-                                    element.children.item(2).children.item(1).children.item(0).children.item(1).innerHTML = (Math.round(memory * 100) / 100).toFixed(2) + " " + storageAmounts[memoryValue]
+                                    element.children.item(2).children.item(1).children.item(0).children.item(1).innerText = (Math.round(memory * 100) / 100).toFixed(2) + " " + storageAmounts[memoryValue]
 
                                     var storage = JSON.parse(message.args[0]).disk_bytes + backupsSize
                                     var storageValue = 0
@@ -236,7 +236,7 @@ fetch("/api/client?page=1" + ((document.querySelector(".Input-sc-19rce1w-0") != 
                                         storageValue++
                                     }
 
-                                    element.children.item(2).children.item(2).children.item(0).children.item(1).innerHTML = (Math.round(storage * 100) / 100).toFixed(2) + " " + storageAmounts[storageValue]
+                                    element.children.item(2).children.item(2).children.item(0).children.item(1).innerText = (Math.round(storage * 100) / 100).toFixed(2) + " " + storageAmounts[storageValue]
 
                                     element.classList.remove("fRwFrz")
                                     element.classList.remove("fwbDSe")
@@ -247,8 +247,8 @@ fetch("/api/client?page=1" + ((document.querySelector(".Input-sc-19rce1w-0") != 
                                     } else if (JSON.parse(message.args[0]).state == "offline") {
                                         element.classList.add("fwbDSe")
 
-                                        element.children.item(2).children.item(0).children.item(0).children.item(1).innerHTML = "---"
-                                        element.children.item(2).children.item(1).children.item(0).children.item(1).innerHTML = "---"
+                                        element.children.item(2).children.item(0).children.item(0).children.item(1).innerText = "---"
+                                        element.children.item(2).children.item(1).children.item(0).children.item(1).innerText = "---"
                                     } else if (JSON.parse(message.args[0]).state == "starting" || JSON.parse(message.args[0]).state == "stopping") {
                                         element.classList.add("kVijQB")
                                     }
@@ -283,7 +283,7 @@ console.log(prefix + "Successfully injected Better Pterodactyl script.")
 if (!window.PterodactylUser.root_admin) console.warn(prefix + "Your logged in as a normal user, certain things may not work.")
 
 function setInnerText(element, text) {
-    var currentText = element.innerHTML
+    var currentText = element.innerText
 
     for (var i = 0; i < element.children.length; i++) {
         currentText = currentText.replace(element.children.item(i).outerHTML, "").replace("&nbsp;", " ").trim()
@@ -302,7 +302,7 @@ fetch("/api/client/servers/" + window.location.pathname.split("/")[2]).then(res 
             ports += allocation.attributes.port + ", "
         })
 
-        element.children.item(1).children.item(1).children.item(0).children.item(2).children.item(1).innerHTML = ports.substring(0, ports.length - 2)
+        element.children.item(1).children.item(1).children.item(0).children.item(2).children.item(1).innerText = ports.substring(0, ports.length - 2)
     }
 
     if (options["server-remove-ports"]) {
@@ -450,7 +450,7 @@ fetch("/api/client?page=1" + ((document.querySelector(".sc-19rce1w-0") != null ?
                         ports += allocation.attributes.port + ", "
                     })
 
-                    element.children.item(1).children.item(1).innerHTML = ports.substring(0, ports.length - 2)
+                    element.children.item(1).children.item(1).innerText = ports.substring(0, ports.length - 2)
                 }
 
                 if (options["dashboard-remove-ports"]) {
@@ -476,7 +476,7 @@ fetch("/api/client?page=1" + ((document.querySelector(".sc-19rce1w-0") != null ?
                                     storageValue++
                                 }
 
-                                element.children.item(2).children.item(2).children.item(0).children.item(1).innerHTML = (Math.round(storage * 100) / 100).toFixed(2) + " " + storageAmounts[storageValue]
+                                element.children.item(2).children.item(2).children.item(0).children.item(1).innerText = (Math.round(storage * 100) / 100).toFixed(2) + " " + storageAmounts[storageValue]
                             })
                         }
                     })
@@ -518,7 +518,7 @@ fetch("/api/client?page=1" + ((document.querySelector(".sc-19rce1w-0") != null ?
                                     return
                                 }
 
-                                element.children.item(2).children.item(0).children.item(0).children.item(1).innerHTML = (Math.round(JSON.parse(message.args[0]).cpu_absolute * 100) / 100).toFixed(2) + "%"
+                                element.children.item(2).children.item(0).children.item(0).children.item(1).innerText = (Math.round(JSON.parse(message.args[0]).cpu_absolute * 100) / 100).toFixed(2) + "%"
 
                                 var memory = JSON.parse(message.args[0]).memory_bytes
                                 var memoryValue = 0
@@ -528,7 +528,7 @@ fetch("/api/client?page=1" + ((document.querySelector(".sc-19rce1w-0") != null ?
                                     memoryValue++
                                 }
 
-                                element.children.item(2).children.item(1).children.item(0).children.item(1).innerHTML = (Math.round(memory * 100) / 100).toFixed(2) + " " + storageAmounts[memoryValue]
+                                element.children.item(2).children.item(1).children.item(0).children.item(1).innerText = (Math.round(memory * 100) / 100).toFixed(2) + " " + storageAmounts[memoryValue]
 
                                 var storage = JSON.parse(message.args[0]).disk_bytes + backupsSize
                                 var storageValue = 0
@@ -538,7 +538,7 @@ fetch("/api/client?page=1" + ((document.querySelector(".sc-19rce1w-0") != null ?
                                     storageValue++
                                 }
 
-                                element.children.item(2).children.item(2).children.item(0).children.item(1).innerHTML = (Math.round(storage * 100) / 100).toFixed(2) + " " + storageAmounts[storageValue]
+                                element.children.item(2).children.item(2).children.item(0).children.item(1).innerText = (Math.round(storage * 100) / 100).toFixed(2) + " " + storageAmounts[storageValue]
 
                                 element.classList.remove("liBonM")
                                 element.classList.remove("jqQFoq")
@@ -549,8 +549,8 @@ fetch("/api/client?page=1" + ((document.querySelector(".sc-19rce1w-0") != null ?
                                 } else if (JSON.parse(message.args[0]).state == "offline") {
                                     element.classList.add("jqQFoq")
 
-                                    element.children.item(2).children.item(0).children.item(0).children.item(1).innerHTML = "---"
-                                    element.children.item(2).children.item(1).children.item(0).children.item(1).innerHTML = "---"
+                                    element.children.item(2).children.item(0).children.item(0).children.item(1).innerText = "---"
+                                    element.children.item(2).children.item(1).children.item(0).children.item(1).innerText = "---"
                                 } else if (JSON.parse(message.args[0]).state == "starting" || JSON.parse(message.args[0]).state == "stopping") {
                                     element.classList.add("lpPPi")
                                 }
@@ -584,7 +584,7 @@ console.log(prefix + "Successfully injected Better Pterodactyl script.")
 console.warn(prefix + "Your running an old version of the panel, certain things may not work.")
 
 function setInnerText(element, text) {
-    var currentText = element.innerHTML
+    var currentText = element.innerText
 
     for (var i = 0; i < element.children.length; i++) {
         currentText = currentText.replace(element.children.item(i).outerHTML, "").replace("&nbsp;", " ").trim()
@@ -603,7 +603,7 @@ fetch("/api/client/servers/" + window.location.pathname.split("/")[2]).then(res 
             ports += allocation.attributes.port + ", "
         })
 
-        element.children.item(0).children.item(0).children.item(1).children.item(2).children.item(1).innerHTML = ports.substring(0, ports.length - 2)
+        element.children.item(0).children.item(0).children.item(1).children.item(2).children.item(1).innerText = ports.substring(0, ports.length - 2)
     }
 
     if (options["server-remove-ports"]) {

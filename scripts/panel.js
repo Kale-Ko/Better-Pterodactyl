@@ -7,7 +7,7 @@ console.log(prefix + "Successfully injected Better Pterodactyl script.")
 if (!window.PterodactylUser.root_admin) console.warn(prefix + "Your logged in as a normal user, certain things may not work.")
 
 fetch("/api/client?page=1" + ((document.querySelector(".Input-sc-19rce1w-0") != null ? document.querySelector(".Input-sc-19rce1w-0").checked : false) ? "&type=admin" : "")).then(res => res.json()).then(data => {
-    if (options["dashboard-reorder-servers"] && window.PterodactylUser.root_admin) {
+    if (options["dashboard-reorder-servers"] && (options["dashboard-reorder-servers-mode"] == "external-id" || options["dashboard-reorder-servers-mode"] == "reverse-external-id") && window.PterodactylUser.root_admin) {
         var done = 0
         data.data.forEach(server => {
             fetch("/api/application/servers/" + server.attributes.internal_id).then(res => res.json()).then(data2 => {
@@ -98,13 +98,13 @@ fetch("/api/client?page=1" + ((document.querySelector(".Input-sc-19rce1w-0") != 
             document.querySelectorAll(".GreyRowBox-sc-1xo9c6v-0").forEach(element => {
                 if (element.href.split("/")[4] == server.attributes.identifier) {
                     if (options["dashboard-show-all-ports"]) {
-                        var ports = ""
+                        var ports = []
 
                         server.attributes.relationships.allocations.data.forEach(allocation => {
-                            ports += allocation.attributes.port + ", "
+                            ports.push(allocation.attributes.port)
                         })
 
-                        element.children.item(1).children.item(0).children.item(1).innerText = ports.substring(0, ports.length - 2)
+                        element.children.item(1).children.item(0).children.item(1).innerText = ports.join(", ")
                     }
 
                     if (options["dashboard-remove-ports"]) {
@@ -139,7 +139,7 @@ fetch("/api/client?page=1" + ((document.querySelector(".Input-sc-19rce1w-0") != 
                         fetch("/api/client/servers/" + server.attributes.uuid + "/websocket").then(res => res.json()).then(data => {
                             var socket = new WebSocket(data.data.socket)
 
-                            socket.addEventListener("open", e => {
+                            socket.addEventListener("open", () => {
                                 socket.send(JSON.stringify({ event: "auth", args: [data.data.token] }))
                             })
 

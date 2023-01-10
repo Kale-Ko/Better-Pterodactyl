@@ -20,13 +20,13 @@ fetch("/api/client/servers/" + window.location.pathname.split("/")[2]).then(res 
     var element = document.querySelector(".ContentContainer-sc-x3r2dw-0")
 
     if (options["server-show-all-ports"]) {
-        var ports = ""
+        var ports = []
 
         server.attributes.relationships.allocations.data.forEach(allocation => {
-            ports += allocation.attributes.port + ", "
+            ports.push(allocation.attributes.port)
         })
 
-        element.children.item(1).children.item(1).children.item(0).children.item(2).children.item(1).innerText = ports.substring(0, ports.length - 2)
+        element.children.item(1).children.item(1).children.item(0).children.item(2).children.item(1).innerText = ports.join(", ")
     }
 
     if (options["server-remove-ports"]) {
@@ -48,7 +48,7 @@ fetch("/api/client/servers/" + window.location.pathname.split("/")[2]).then(res 
             fetch("/api/client/servers/" + server.attributes.uuid + "/websocket").then(res => res.json()).then(data => {
                 var socket = new WebSocket(data.data.socket)
 
-                socket.addEventListener("open", e => {
+                socket.addEventListener("open", () => {
                     socket.send(JSON.stringify({ event: "auth", args: [data.data.token] }))
                 })
 

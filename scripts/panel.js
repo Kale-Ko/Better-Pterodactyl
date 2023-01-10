@@ -66,25 +66,15 @@ fetch("/api/client?page=1" + ((document.querySelector(".Input-sc-19rce1w-0") != 
                         return 0
                     }
                 })
-            } else {
-                data.data.sort((a, b) => {
-                    if (a.attributes.name > b.attributes.name) {
-                        return 1
-                    } else if (b.attributes.name > a.attributes.name) {
-                        return -1
-                    } else {
-                        return 0
-                    }
-                })
             }
 
             var elements = {}
-
             var first = true
+
             data.data.forEach(server => {
                 document.querySelectorAll(".GreyRowBox-sc-1xo9c6v-0").forEach(element => {
                     if (element.href.split("/")[4] == server.attributes.identifier) {
-                        elements[server.attributes.uuid] = element.cloneNode(true)
+                        elements[server.attributes.uuid] = element
 
                         element.remove()
 

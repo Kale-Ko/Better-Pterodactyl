@@ -1,9 +1,8 @@
 {
     "manifest_version": 2,
     "name": "Better Pterodactyl",
-    "short_name": "Pterodactyl+",
-    "description": "Upgrade the pterodactyl panel with new and improved features",
-    "version": "1.7.1",
+    "description": "Upgrade the Pterodactyl panel with new and better features",
+    "version": "1.8.0",
     "browser_specific_settings": {
         "gecko": {
             "id": "kale-ko@better-pterodactyl"

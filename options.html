@@ -1,50 +1,91 @@
 <!DOCTYPE html>
-<html lang="en-US">
+<html lang="en">
 
 <head>
     <title>Better Pterodactyl - Options</title>
 
-    <script src="options.js"></script>
-
     <style>
         html {
+            --text-color: #e5e8eb;
+
+            --background-color: #33404d;
+            --header-color: #1f2933;
+        }
+
+        html,
+        body {
+            width: 400px;
+            height: 600px;
+
             margin: 0px;
             padding: 0px;
 
-            width: 200px;
+            overflow-x: hidden;
+            overflow-y: scroll;
         }
 
         body {
-            margin: 14px;
-            padding: 0px;
-
             width: 100%;
-        }
+            height: 100%;
 
-        .options {
             margin: 0px;
             padding: 0px;
 
-            width: 100%;
+            background-color: var(--background-color);
+            color: var(--text-color);
+
+            font-family: "ui-sans-serif", "system-ui", "sans-serif";
         }
 
-        .options>.options-title {
-            font-size: 32px;
+        .options {
+            width: 100%;
+            height: 100%;
+
+            margin: 0px;
+            padding: 0px;
+        }
+
+        .options>.options-header {
+            width: 400px;
+            height: 56px;
+
+            margin: 0px;
+            padding: 0px;
+
+            background-color: var(--header-color);
+        }
+
+        .options>.options-header>.options-title {
+            width: 40%;
+            height: 56px;
+            line-height: 56px;
+
+            margin: 0px 0px 0px 12px;
+            padding: 0px;
+
+            font-size: 30px;
+            text-align: left center;
         }
 
         .options>.options-category {
-            margin: 30px 0px 20px 0px;
+            margin: 30px 0px 20px 10px;
             padding: 0px;
 
             width: 100%;
         }
 
         .options>.options-category>.options-category-title {
-            font-size: 22px;
+            margin: 0px;
+            padding: 0px;
+
+            font-size: 26px;
         }
 
         .options>.options-category>.options-category-description {
-            font-size: 18px;
+            margin: 0px;
+            padding: 0px;
+
+            font-size: 16px;
         }
 
         .options>.options-category>.option {
@@ -58,26 +99,34 @@
             margin: 1px;
             padding: 0px;
 
-            font-size: 14px;
+            font-size: 15px;
         }
 
         .options>.options-category>.option>.option-description {
             margin: 1px;
             padding: 0px;
 
-            font-size: 10px;
+            font-size: 12px;
         }
 
-        .options>.options-category>.option>.option-value {}
+        .options>.options-category>.option>.option-label>.option-value {
+            margin: 2px;
+            padding: 1px 3px;
+
+            font-size: 14px;
+        }
     </style>
 </head>
 
 <body>
     <div id="options" class="options">
-        <h1 class="options-title">Options</h1>
+        <div class="options-header">
+            <h1 class="options-title">Options</h1>
+        </div>
 
         <div class="options-category">
-            <h2 class="options-category-title">Dashboard</h2>
+            <p class="options-category-title">Dashboard</p>
+            <!-- <p class="options-category-description">Options for the main dashboard</p> -->
 
             <div class="option">
                 <p class="option-label" for="dashboard-live-stats">Live stats: <input id="dashboard-live-stats" class="option-value" type="checkbox" checked="true"></p>
@@ -91,11 +140,11 @@
 
             <div class="option">
                 <p class="option-label" for="dashboard-reorder-servers-mode">Reorder mode:
-                    <select id="dashboard-reorder-servers-mode" class="option-value" checked="true">
-                        <option value="external-id">External Id (Requires admin)</option>
-                        <option value="reverse-external-id">Reverse External Id (Requires admin)</option>
+                    <select id="dashboard-reorder-servers-mode" class="option-value">
                         <option value="name">Name</option>
                         <option value="reverse-name">Reverse Name</option>
+                        <option value="external-id">External Id (Requires admin)</option>
+                        <option value="reverse-external-id">Reverse External Id (Requires admin)</option>
                     </select>
                 </p>
                 <p class="option-description">The mode to reorder the servers by</p>
@@ -113,7 +162,8 @@
         </div>
 
         <div class="options-category">
-            <h2 class="options-category-title">Server</h2>
+            <p class="options-category-title">Server</p>
+            <!-- <p class="options-category-description">Options for the server panel</p> -->
 
             <div class="option">
                 <p class="option-label" for="server-show-all-ports">Show all ports: <input id="server-show-all-ports" class="option-value" type="checkbox" checked="true"></p>
@@ -132,7 +182,8 @@
         </div>
 
         <div class="options-category">
-            <h2 class="options-category-title">Files</h2>
+            <p class="options-category-title">Files</p>
+            <!-- <p class="options-category-description">Options for files around the panel</p> -->
 
             <div class="option">
                 <p class="option-label" for="files-include-backups">Include backups: <input id="files-include-backups" class="option-value" type="checkbox" checked="true"></p>
@@ -140,6 +191,8 @@
             </div>
         </div>
     </div>
+
+    <script src="options.js"></script>
 </body>
 
 </html>

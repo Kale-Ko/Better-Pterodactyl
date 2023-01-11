@@ -13,16 +13,6 @@ var storageAmounts = [
 console.log(prefix + "Successfully injected Better Pterodactyl script.")
 if (!window.PterodactylUser.root_admin) console.warn(prefix + "Your logged in as a normal user, certain things may not work.")
 
-function setInnerText(element, text) {
-    var currentText = element.innerText
-
-    for (var i = 0; i < element.children.length; i++) {
-        currentText = currentText.replace(element.children.item(i).outerHTML, "").replace("&nbsp;", " ").trim()
-    }
-
-    element.innerHTML = element.innerHTML.replace(currentText, text)
-}
-
 fetch("/api/client/servers/" + window.location.pathname.split("/")[2]).then(res => res.json()).then(server => {
     var element = document.querySelector(".ContentContainer-sc-x3r2dw-0")
 
@@ -79,7 +69,7 @@ fetch("/api/client/servers/" + window.location.pathname.split("/")[2]).then(res 
                             storageValue++
                         }
 
-                        setInnerText(element.children.item(1).children.item(1).children.item(4).children.item(2).children.item(1), (Math.round(storage * 100) / 100).toFixed(2) + " " + storageAmounts[storageValue])
+                        element.children.item(1).children.item(1).children.item(4).children.item(2).children.item(1).childNodes.item(0).textContent = (Math.round(storage * 100) / 100).toFixed(2) + " " + storageAmounts[storageValue]
                     }
 
                     var prevLocation = document.location.href

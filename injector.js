@@ -1,14 +1,5 @@
 var prefix = "[Better Pterodactyl] "
 
-var storageAmounts = [
-    "iB",
-    "KiB",
-    "MiB",
-    "GiB",
-    "TiB",
-    "PiB"
-]
-
 if (document.readyState == "complete") {
     load()
 } else {
@@ -42,14 +33,14 @@ function load() {
             if (window.location.pathname == "/") {
                 fetch(browser.runtime.getURL("/scripts/panel.js")).then(res => res.text()).then(script => {
                     var scriptElement = document.createElement("script")
-                    var scriptContents = document.createTextNode(script.replace("\"{options}\"", JSON.stringify(options)).replace("\"{prefix}\"", "\"" + prefix + "\"").replace("\"{storageAmounts}\"", JSON.stringify(storageAmounts)))
+                    var scriptContents = document.createTextNode(script.replace("\"{options}\"", JSON.stringify(options)))
                     scriptElement.append(scriptContents)
                     document.body.appendChild(scriptElement)
                 })
             } else if (window.location.pathname.startsWith("/server/") && window.location.pathname.split("/").length == 3) {
                 fetch(browser.runtime.getURL("/scripts/server.js")).then(res => res.text()).then(script => {
                     var scriptElement = document.createElement("script")
-                    var scriptContents = document.createTextNode(script.replace("\"{options}\"", JSON.stringify(options)).replace("\"{prefix}\"", "\"" + prefix + "\"").replace("\"{storageAmounts}\"", JSON.stringify(storageAmounts)))
+                    var scriptContents = document.createTextNode(script.replace("\"{options}\"", JSON.stringify(options)))
                     scriptElement.append(scriptContents)
                     document.body.appendChild(scriptElement)
                 })

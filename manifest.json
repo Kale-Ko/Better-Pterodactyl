@@ -52,7 +52,7 @@
                 "https:\/\/*/*"
             ],
             "js": [
-                "/index.js"
+                "/injector.js"
             ],
             "run_at": "document_end"
         }

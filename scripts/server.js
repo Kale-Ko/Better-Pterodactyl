@@ -1,7 +1,14 @@
 var options = "{options}"
-var prefix = "{prefix}"
 
-var storageAmounts = "{storageAmounts}"
+var prefix = "[Better Pterodactyl] "
+var storageAmounts = [
+    "iB",
+    "KiB",
+    "MiB",
+    "GiB",
+    "TiB",
+    "PiB"
+]
 
 console.log(prefix + "Successfully injected Better Pterodactyl script.")
 if (!window.PterodactylUser.root_admin) console.warn(prefix + "Your logged in as a normal user, certain things may not work.")
